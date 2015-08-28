@@ -5,10 +5,10 @@ im = Image.open('base.png').convert('RGBA')
 W, H = im.size
 
 MaxSize = 200
-maxFontW = W * .66666666
+maxFontW = W * .85
 
 with open('data.csv', 'rb') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+    spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
     for row in spamreader:
         im = Image.open('base.png').convert('RGBA')
 
@@ -45,4 +45,3 @@ with open('data.csv', 'rb') as csvfile:
         filename = filename.replace (" ", "_")
         print filename
         im.save(filename,'PNG')
-# im.show()
