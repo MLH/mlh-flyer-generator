@@ -1,20 +1,42 @@
-from PIL import Image, ImageDraw, ImageFont
-# get an image
-base = Image.open('base.png').convert('RGBA')
+from PIL import Image, ImageDraw,ImageFont
 
-# make a blank image for the text, initialized to transparent text color
-txt = Image.new('RGBA', base.size, (255,255,255,0))
+im = Image.open('base.png').convert('RGBA')
+W, H = im.size
 
-# get a font
-fnt = ImageFont.truetype('Outage.ttf', 400)
-# get a drawing context
-d = ImageDraw.Draw(txt)
+MaxSize = 200
+maxFontW = W * .66666666
 
-# draw text, half opacity
-d.text((10,10), "Hello", font=fnt, fill=(42,42,42,128))
-# draw text, full opacity
-d.text((10,460), "World", font=fnt, fill=(42,42,42,255))
+venueName = "University of Texas"
+addressDetails = "2317 Speedway, Austin, TX 78712"
 
-out = Image.alpha_composite(base, txt)
+venueSize = MaxSize
+addressSize = MaxSize/2
 
-out.show()
+venue = ImageFont.truetype('fonts/Outage.ttf', venueSize)
+address = ImageFont.truetype('fonts/OpenSansRegular.ttf', 100)
+
+
+draw = ImageDraw.Draw(im)
+
+wVenue, hVenue = draw.textsize(venueName,font=venue)
+
+while (wVenue > maxFontW):
+    print venueSize
+    venueSize = venueSize - 10
+    venue = ImageFont.truetype('fonts/Outage.ttf', venueSize)
+    wVenue, hVenue = draw.textsize(venueName,font=venue)
+
+wAddress, hAddress = draw.textsize(addressDetails,font=address)
+
+while (wAddress > maxFontW):
+    print addressSize
+    addressSize = addressSize - 10
+    address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
+    wAddress, hAddress = draw.textsize(addressDetails,font=address)
+
+
+draw.text(((W-wVenue)/2,(H-hVenue)/2), venueName,font=venue, fill="white")
+draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue+10), addressDetails,font=address, fill="white")
+
+
+im.show()
