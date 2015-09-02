@@ -1,16 +1,16 @@
 from PIL import Image, ImageDraw,ImageFont
 import csv
 
-im = Image.open('base.png').convert('RGBA')
+im = Image.open('base.jpg').convert('RGBA')
 W, H = im.size
 
 MaxSize = 200
-maxFontW = W * .85
+maxFontW = W * .90
 
 with open('data.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
     for row in spamreader:
-        im = Image.open('base.png').convert('RGBA')
+        im = Image.open('base.jpg').convert('RGBA')
 
         venueSize = MaxSize
         addressSize = MaxSize/2
@@ -19,7 +19,7 @@ with open('data.csv', 'rb') as csvfile:
         addressDetails = row[1]
 
         venue = ImageFont.truetype('fonts/Outage.ttf', venueSize)
-        address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
+        address = ImageFont.truetype('fonts/Lato.ttf', addressSize)
 
         draw = ImageDraw.Draw(im)
 
@@ -38,8 +38,8 @@ with open('data.csv', 'rb') as csvfile:
             wAddress, hAddress = draw.textsize(addressDetails,font=address)
 
 
-        draw.text(((W-wVenue)/2,(H-hVenue)/2), venueName,font=venue, fill="white")
-        draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue+10), addressDetails,font=address, fill="white")
+        draw.text(((W-wVenue)/2,(H-hVenue)/2 + 100), venueName,font=venue, fill="white")
+        draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue+125), addressDetails,font=address, fill="white")
 
         filename = 'output/' + venueName.strip() + '.png'
         filename = filename.replace (" ", "_")
