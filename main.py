@@ -1,6 +1,6 @@
-# Script Name		    : main.py
-# Author			    : Shy Ruparel
-# Created			    : September 8 2015
+# Script Name       : main.py
+# Author            : Shy Ruparel
+# Created           : September 8 2015
 
 # Pulls in data from "data.csv" which is 2 columns wide
 # Uses a base image as the background
