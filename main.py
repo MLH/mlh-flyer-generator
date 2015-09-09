@@ -1,6 +1,6 @@
-# Script Name		: main.py
-# Author			: Shy Ruparel
-# Created			: September 8 2015
+# Script Name		    : main.py
+# Author			    : Shy Ruparel
+# Created			    : September 8 2015
 
 # Pulls in data from "data.csv" which is 2 columns wide
 # Uses a base image as the background
@@ -11,7 +11,7 @@
 from PIL import Image, ImageDraw,ImageFont
 import csv
 
-# main image from base.jpg
+# Main image from base.jpg
 im = Image.open('base.jpg').convert('RGBA')
 W, H = im.size
 
@@ -53,11 +53,11 @@ with open('data.csv', 'rb') as csvfile:
             address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
             wAddress, hAddress = draw.textsize(addressDetails,font=address)
 
-        # put text onto the image
+        # Put text onto the image
         draw.text(((W-wVenue)/2,(H-hVenue)/2 + 100), venueName,font=venue, fill="white")
         draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue+125), addressDetails,font=address, fill="white")
 
-        # save out the image
+        # Save out the image
         filename = 'output/' + venueName.strip() + '.png'
         filename = filename.replace (" ", "_")
         print filename
