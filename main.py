@@ -28,8 +28,8 @@ with open('data.csv', 'rb') as csvfile:
         addressSize = MaxSize/2
 
         # Grab name and address
-        venueName = row[0]
-        addressDetails = row[1]
+        venueName = row[0].decode('utf-8')
+        addressDetails = row[1].decode('utf-8')
 
         # Set font and size
         venue = ImageFont.truetype('fonts/Outage.ttf', venueSize)
