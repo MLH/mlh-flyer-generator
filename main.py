@@ -9,6 +9,7 @@
 # and saves every image as a .PNG
 
 from PIL import Image, ImageDraw,ImageFont
+import os.path
 import csv
 
 # Main image from base.jpg
@@ -37,28 +38,32 @@ with open('data.csv', 'rb') as csvfile:
 
         draw = ImageDraw.Draw(im)
 
-        # Find size of text
-        wVenue, hVenue = draw.textsize(venueName,font=venue)
-
-        # Make size smaller until width is less than size of maxFontW
-        while (wVenue > maxFontW):
-            venueSize = venueSize - 10
-            venue = ImageFont.truetype('fonts/OpenSansBold.ttf', venueSize)
-            wVenue, hVenue = draw.textsize(venueName,font=venue)
-
-        wAddress, hAddress = draw.textsize(addressDetails,font=address)
-
-        while (wAddress > maxFontW):
-            addressSize = addressSize - 10
-            address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
-            wAddress, hAddress = draw.textsize(addressDetails,font=address)
-
-        # Put text onto the image
-        draw.text(((W-wVenue)/2,(H-hVenue)/2 ), venueName,font=venue, fill="black")
-        draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue), addressDetails,font=address, fill="black")
-
-        # Save out the image
+        #Check if file already exists.
         filename = 'output/' + venueName.strip() + '.png'
         filename = filename.replace (" ", "_")
-        print filename
-        im.save(filename,'PNG')
+        if os.path.isfile(filename) == True:
+            print filename + " exists."
+        else:
+            # Find size of text
+            wVenue, hVenue = draw.textsize(venueName,font=venue)
+
+            # Make size smaller until width is less than size of maxFontW
+            while (wVenue > maxFontW):
+                venueSize = venueSize - 10
+                venue = ImageFont.truetype('fonts/OpenSansBold.ttf', venueSize)
+                wVenue, hVenue = draw.textsize(venueName,font=venue)
+
+            wAddress, hAddress = draw.textsize(addressDetails,font=address)
+
+            while (wAddress > maxFontW):
+                addressSize = addressSize - 10
+                address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
+                wAddress, hAddress = draw.textsize(addressDetails,font=address)
+
+            # Put text onto the image
+            draw.text(((W-wVenue)/2,(H-hVenue)/2 ), venueName,font=venue, fill="black")
+            draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue), addressDetails,font=address, fill="black")
+
+            # Save out the image
+            im.save(filename,'PNG')
+            print filename + " created."
