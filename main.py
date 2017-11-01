@@ -11,6 +11,7 @@
 from PIL import Image, ImageDraw,ImageFont
 import os.path
 import csv
+import urllib
 
 # Main image from base.jpg
 im = Image.open('base.jpg').convert('RGBA')
@@ -27,20 +28,24 @@ with open('data.csv', 'rb') as csvfile:
 
         venueSize = MaxSize
         addressSize = MaxSize/2
+        urlSize = MaxSize/2
 
         # Grab name and address
         venueName = row[0].decode('utf-8')
         addressDetails = row[1].decode('utf-8')
+        urlDetails = row[2].decode('utf-8').replace(" ", "+")
 
         # Set font and size
         venue = ImageFont.truetype('fonts/OpenSansBold.ttf', venueSize)
         address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
+        url = ImageFont.truetype('fonts/OpenSansRegular.ttf', urlSize)
 
         draw = ImageDraw.Draw(im)
 
         #Check if file already exists.
-        filename = 'output/' + venueName.strip() + '.png'
+        filename = 'output/' + venueName.strip().replace ("/", "_") + '.png'
         filename = filename.replace (" ", "_")
+        
         if os.path.isfile(filename) == True:
             print filename + " exists."
         else:
@@ -60,9 +65,17 @@ with open('data.csv', 'rb') as csvfile:
                 address = ImageFont.truetype('fonts/OpenSansRegular.ttf', addressSize)
                 wAddress, hAddress = draw.textsize(addressDetails,font=address)
 
+            wUrl, hUrl = draw.textsize(urlDetails,font=url)
+
+            while (wUrl > maxFontW):
+                urlSize = urlSize - 10
+                url = ImageFont.truetype('fonts/OpenSansRegular.ttf', urlSize)
+                wUrl, hUrl = draw.textsize(urlDetails,font=url)
+
             # Put text onto the image
             draw.text(((W-wVenue)/2,(H-hVenue)/2 ), venueName,font=venue, fill="black")
             draw.text(((W-wAddress)/2,((H-hAddress)/2)+hVenue), addressDetails,font=address, fill="black")
+            draw.text(((W-wUrl)/2,H-550), urlDetails,font=url, fill="blue")
 
             # Save out the image
             im.save(filename,'PNG')
